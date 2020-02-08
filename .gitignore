@@ -1,0 +1,8 @@
+qkontrol
+*.o
+Makefile
+.qmake.stash
+qrc_*
+moc_*
+ui_*
+
