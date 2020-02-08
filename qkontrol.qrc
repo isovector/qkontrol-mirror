@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="images">
+    <file>qkontrol.png</file>
+    <file>background.png</file>
+  </qresource>
+</RCC>
