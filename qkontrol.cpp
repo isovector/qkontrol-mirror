@@ -26,7 +26,7 @@ qkontrolWindow::qkontrolWindow(QWidget* parent /* = 0 */, Qt::WindowFlags flags 
         // search for the usb device and open it
         res = hid_init();
 	QList<int> pids;
-	pids << 0x1610 << 0x1620 << 0x1630; // try the device ids for 49-, 61- and 88-key versions
+	pids << 0x1860 << 0x1610 << 0x1620 << 0x1630; // try the device ids for 49-, 61- and 88-key versions
 
 	for(int i=0; i<pids.count(); i++)
 		{
@@ -60,7 +60,7 @@ qkontrolWindow::qkontrolWindow(QWidget* parent /* = 0 */, Qt::WindowFlags flags 
 	allColors["CC"] = QColor(255, 255, 0);
 	allColors["parameter"] = QColor(255, 255, 255);
 	allColors["divider"] = QColor(128, 128, 255);
-	allColors["value"] = QColor(0, 255, 0); 
+	allColors["value"] = QColor(0, 255, 0);
 	QPixmap pixmapsliderscolor(color_sliders->width()-4, color_sliders->height()-4);
 	QPixmap pixmapCCcolor(color_CC->width()-4, color_CC->height()-4);
 	QPixmap pixmapParametercolor(color_parameters->width()-4, color_parameters->height()-4);
@@ -141,7 +141,7 @@ qkontrolWindow::qkontrolWindow(QWidget* parent /* = 0 */, Qt::WindowFlags flags 
 		connect(cb, SIGNAL(currentIndexChanged(int)), this, SLOT(updateWidgets()));
 
 	// button slot functionms
-	QList<QComboBox *> allBModes = tabWidget->findChildren<QComboBox *>(QRegExp("^b_mode_"));		
+	QList<QComboBox *> allBModes = tabWidget->findChildren<QComboBox *>(QRegExp("^b_mode_"));
 	for(QComboBox *cb : allBModes)
 		connect(cb, SIGNAL(currentIndexChanged(int)), this, SLOT(updateWidgets()));
 
@@ -223,7 +223,7 @@ void qkontrolWindow::updateWidgets()
 	for(int i=0; i<allBModes.count();i++)
 		switch(allBModes[i]->currentIndex())
 			{
-			case 0: allBChannels[i]->setEnabled(0); allBControls[i]->setEnabled(0); allBColors[i]->setEnabled(0); allBDescriptions[i]->setEnabled(0); break; 
+			case 0: allBChannels[i]->setEnabled(0); allBControls[i]->setEnabled(0); allBColors[i]->setEnabled(0); allBDescriptions[i]->setEnabled(0); break;
 			case 1: allBChannels[i]->setEnabled(1); allBControls[i]->setEnabled(1); allBColors[i]->setEnabled(1); allBDescriptions[i]->setEnabled(1); break;
 			case 2: allBChannels[i]->setEnabled(1); allBControls[i]->setEnabled(1); allBColors[i]->setEnabled(1); allBDescriptions[i]->setEnabled(1); break;
 			case 3: allBChannels[i]->setEnabled(1); allBControls[i]->setEnabled(1); allBColors[i]->setEnabled(1); allBDescriptions[i]->setEnabled(1); break;
@@ -233,7 +233,7 @@ void qkontrolWindow::updateWidgets()
 	// pedals page
 	switch(p_mode_cont_1->currentIndex())
 		{
-		case 0: labelPCC_1->hide(); labelPCH_1->hide(); p_CC_cont_1->hide(); p_channel_cont_1->hide(); p_range_1->hide(); labelPRange_1->hide(); labelPMin_1->hide(); labelPMax_1->hide(); break; 
+		case 0: labelPCC_1->hide(); labelPCH_1->hide(); p_CC_cont_1->hide(); p_channel_cont_1->hide(); p_range_1->hide(); labelPRange_1->hide(); labelPMin_1->hide(); labelPMax_1->hide(); break;
 		case 1: labelPCC_1->hide(); labelPCH_1->show(); p_CC_cont_1->hide(); p_channel_cont_1->show(); p_range_1->show(); labelPRange_1->show(); labelPMin_1->show(); labelPMax_1->show(); break;
 		case 2: labelPCC_1->show(); labelPCH_1->show(); p_CC_cont_1->show(); p_channel_cont_1->show(); p_range_1->show(); labelPRange_1->show(); labelPMin_1->show(); labelPMax_1->show(); break;
 		}
@@ -439,7 +439,7 @@ void qkontrolWindow::setKeyzones()
 		}
 
 	res = hid_write(handle, (unsigned char*) mapping.constData(), mapping.count());
-	
+
 
 	knobsAndButtons.append(QByteArray::fromHex("a1"));
 	for(unsigned int i=kontrolPage*8;i<=kontrolPage*8+7;i++) // buttons
@@ -589,7 +589,7 @@ void qkontrolWindow::setKeyzones()
 	// transmit the pedal and switch parameters
 
 	pedals.append(QByteArray::fromHex("a3"));
-	
+
 	// pedal 1 continous mode
 	switch(p_mode_cont_1->currentIndex())
 		{
@@ -763,7 +763,7 @@ void qkontrolWindow::setKeyzones()
 	// print the selected Midi CC numbers on the screens
 	QPixmap screen1(480, 272);
 	QPixmap screen2(480, 272);
-	QPainter *image1 = new QPainter(&screen1); 
+	QPainter *image1 = new QPainter(&screen1);
 	QPainter *image2 = new QPainter(&screen2);
 	QVector<QPainter*> image;
 	image.push_back(image1);
@@ -802,7 +802,7 @@ void qkontrolWindow::setKeyzones()
 
 	QList<int> y;
 	y << 10 << 130 << 250 << 370 << 10 << 130 << 250 << 370;
-	
+
 	for(int i=0;i<=7;i++)
 		{
 		switch(findChild<QComboBox *>("b_mode_"+QString::number(8*kontrolPage+i+1))->currentIndex())
@@ -954,8 +954,8 @@ qkontrolWindow::~qkontrolWindow()
 }
 
 // save XML file of all the needed form values into the user directory
-bool qkontrolWindow::save() 
-	{ 
+bool qkontrolWindow::save()
+	{
 	// find out what necessary values do exist... if you want to use new widgets in the UI, you need to modify this function
 	QList<QSpinBox *> allSpinBoxes = this->findChildren<QSpinBox *>();
 	QList<QCheckBox *> allCheckBoxes = this->findChildren<QCheckBox *>();
@@ -972,7 +972,7 @@ bool qkontrolWindow::save()
 	if(QFileInfo(file).suffix() != "qcp")
 		file.setFileName(file.fileName()+".qcp");
 	file.open(QIODevice::WriteOnly);
-	
+
 	// write XML header
 	file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
  	file.write("<qkontrol VERSION=\"1.0\">\n");
@@ -1016,7 +1016,7 @@ bool qkontrolWindow::save()
 	file.write("\t<Spansliders>\n");
 	for(int ii = 0; ii < allSpansliders.size(); ++ii)
 		file.write(QByteArray().append("\t\t<"+allSpansliders[ii]->objectName()+">"+QString("%1").arg(allSpansliders[ii]->lowerValue(),0,10)+":"+QString("%1").arg(allSpansliders[ii]->upperValue(),0,10)+"</"+allSpansliders[ii]->objectName()+">\n"));
-	file.write("\t</Spansliders>\n");	
+	file.write("\t</Spansliders>\n");
 	// -> comboboxes
 	file.write("\t<Comboboxes>\n");
 	for(int ii = 0; ii < allComboboxes.size(); ++ii)
@@ -1063,7 +1063,7 @@ bool qkontrolWindow::save()
 	file.write("\t</Lineedits>\n");
 	// close and save the configuration file
 	file.write("</qkontrol>\n");
-	file.close();	
+	file.close();
 
         // set window title
 	this->setWindowTitle(QFileInfo(file).fileName()+" - qKontrol");
@@ -1096,7 +1096,7 @@ void qkontrolWindow::b_setPage(int page)
 	labelbPage->setText("page "+QString::number(page+1)+"/4");
 	bPage = page;
 	stackedWidget_b->setCurrentIndex(page);
-	}	
+	}
 
 void qkontrolWindow::k_setPage(int page)
 	{
@@ -1111,7 +1111,7 @@ void qkontrolWindow::k_setPage(int page)
 		toolButton_k_left->setEnabled(false);
 	if(page == 3)
 		toolButton_k_right->setEnabled(false);
-        
+
 	// update page index and set the requested index
 	labelkPage->setText("page "+QString::number(page+1)+"/4");
 	kPage = page;
@@ -1162,7 +1162,7 @@ void qkontrolWindow::zapPreset(bool direction)
 void qkontrolWindow::setButtons()
 	{
 	res = hid_write(handle, (unsigned char*) lightArray.constData(), lightArray.count());
-	}	
+	}
 
 // function to fetch a filename to load
 void qkontrolWindow::getFileName()
@@ -1218,7 +1218,7 @@ bool qkontrolWindow::load(QString filename)
 
 	// find the root tag (in this case: <qkontrol>)
 	QDomElement root = doc.documentElement();
-	
+
 	// dive down into subtags - SAME CAT ORDER LIKE IN THE SAVE() FUNCTION
 	QDomNode m = root.firstChild();
 	QDomNode n = m.firstChild();
@@ -1230,10 +1230,10 @@ bool qkontrolWindow::load(QString filename)
 		if(!isb.isNull())
 			{
 			for (int i=0;i<allSpinBoxes.size();i++)
-				{ 
+				{
 				if(isb.tagName() == QString(allSpinBoxes[i]->objectName()))
 					allSpinBoxes[i]->setValue(isb.text().toInt());
-				} 
+				}
 			}
 		n = n.nextSibling();
 		}
@@ -1246,13 +1246,13 @@ bool qkontrolWindow::load(QString filename)
 		if(!chb.isNull())
 			{
 			for (int i=0;i<allCheckBoxes.size();i++)
-				{ 
+				{
 				if(chb.tagName() == QString(allCheckBoxes[i]->objectName()))
 					allCheckBoxes[i]->setChecked(chb.text().contains("true"));
-				} 
+				}
 			}
 		n = n.nextSibling();
-		}	
+		}
 	// process radio buttons
 	m = m.nextSibling();
 	n = m.firstChild();
@@ -1278,10 +1278,10 @@ bool qkontrolWindow::load(QString filename)
 		if(!sld.isNull())
 			{
 			for (int i=0;i<allSliders.size();i++)
-				{ 
+				{
 				if(sld.tagName() == QString(allSliders[i]->objectName()))
 					allSliders[i]->setValue(sld.text().toInt());
-				} 
+				}
 			}
 		n = n.nextSibling();
 		}
@@ -1294,10 +1294,10 @@ bool qkontrolWindow::load(QString filename)
 		if(!sps.isNull())
 			{
 			for (int i=0;i<allSpansliders.size();i++)
-				{ 
+				{
 				if(sps.tagName() == QString(allSpansliders[i]->objectName()))
 					allSpansliders[i]->setSpan(sps.text().split(':')[0].toInt(),sps.text().split(':')[1].toInt());
-				} 
+				}
 			}
 		n = n.nextSibling();
 		}
@@ -1310,10 +1310,10 @@ bool qkontrolWindow::load(QString filename)
 		if(!cmb.isNull())
 			{
 			for (int i=0;i<allComboboxes.size();i++)
-				{ 
+				{
 				if(cmb.tagName() == QString(allComboboxes[i]->objectName()))
 					allComboboxes[i]->setCurrentIndex(cmb.text().toInt());
-				} 
+				}
 			}
 		n = n.nextSibling();
 		}
@@ -1391,7 +1391,7 @@ bool qkontrolWindow::load(QString filename)
 				}
 			}
 		n = n.nextSibling();
-		}		
+		}
 	// file content is read now... we can close it
 	file.close();
 	setKeyzones();
